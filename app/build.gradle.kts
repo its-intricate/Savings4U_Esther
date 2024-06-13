@@ -12,7 +12,7 @@ kapt {
 
 android {
     namespace = "com.sb.savings4u"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.sb.savings4u"
