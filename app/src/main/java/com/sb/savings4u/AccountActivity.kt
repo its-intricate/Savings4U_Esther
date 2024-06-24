@@ -10,7 +10,7 @@ import com.sb.savings4u.ui.theme.Savings4UTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class AccountActivity : ComponentActivity() {
     private val viewModel: AccountViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

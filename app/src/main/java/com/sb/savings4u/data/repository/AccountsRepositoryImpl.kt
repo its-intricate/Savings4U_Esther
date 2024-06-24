@@ -20,7 +20,7 @@ class AccountsRepositoryImpl @Inject constructor(
     override suspend fun getAccounts(): Result<List<Account>> = safeApiCall {
         val response = starlingBankApiService.getAccounts("Bearer $accessToken")
 
-        if (response.isSuccessful) {
+        if (response.isSuccessful && response.body()?.accounts?.isNotEmpty() == true) {
             response.body()?.accounts ?: throw IllegalStateException("No accounts found")
         } else {
             throw Exception("Failed to load accounts: ${response.message()}")
@@ -30,7 +30,7 @@ class AccountsRepositoryImpl @Inject constructor(
     override suspend fun getAccountHolderName(): Result<String> = safeApiCall {
         val response = starlingBankApiService.getAccountHolderName("Bearer $accessToken")
 
-        if (response.isSuccessful) {
+        if (response.isSuccessful && !response.body()?.accountHolderName.isNullOrBlank()) {
             response.body()?.accountHolderName
                 ?: throw IllegalStateException("Account holder name not found")
         } else {
@@ -48,7 +48,7 @@ class AccountsRepositoryImpl @Inject constructor(
                 "Bearer $accessToken", accountUid, categoryUid, changesSince
             )
 
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body()?.transactions?.isNotEmpty() == true) {
                 response.body()?.transactions
                     ?: throw IllegalStateException("No transactions found")
             } else {
@@ -61,7 +61,7 @@ class AccountsRepositoryImpl @Inject constructor(
         safeApiCall {
             val response = starlingBankApiService.getSavingsGoals("Bearer $accessToken", accountUid)
 
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body()?.savingsGoals?.isNotEmpty() == true) {
                 response.body()?.savingsGoals
                     ?: throw IllegalStateException("No savings goals found")
             } else {

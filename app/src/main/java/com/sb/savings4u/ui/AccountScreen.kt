@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import com.sb.savings4u.domain.usecase.GetRoundUpTotalUseCase.Companion.MINOR_TO_MAJOR_UNIT_QUALIFIER
 
 @Composable
 fun AccountScreen(viewModel: AccountViewModel) {
@@ -42,7 +43,7 @@ fun AccountScreen(viewModel: AccountViewModel) {
 }
 
 @Composable
-fun LoadingIndicator() {
+private fun LoadingIndicator() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
@@ -52,7 +53,7 @@ fun LoadingIndicator() {
 }
 
 @Composable
-fun Content(uiState: AccountContract.AccountUIState, viewModel: AccountViewModel) {
+private fun Content(uiState: AccountContract.AccountUIState, viewModel: AccountViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,7 +76,7 @@ fun Content(uiState: AccountContract.AccountUIState, viewModel: AccountViewModel
 }
 
 @Composable
-fun AccountInformation(uiState: AccountContract.AccountUIState) {
+private fun AccountInformation(uiState: AccountContract.AccountUIState) {
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -101,7 +102,7 @@ fun AccountInformation(uiState: AccountContract.AccountUIState) {
 }
 
 @Composable
-fun SavingsSection(uiState: AccountContract.AccountUIState) {
+private fun SavingsSection(uiState: AccountContract.AccountUIState) {
     Card(modifier = Modifier.padding(16.dp)) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -132,7 +133,7 @@ fun SavingsSection(uiState: AccountContract.AccountUIState) {
 }
 
 @Composable
-fun BottomButtons(viewModel: AccountViewModel, modifier: Modifier = Modifier) {
+private fun BottomButtons(viewModel: AccountViewModel, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -156,7 +157,7 @@ fun BottomButtons(viewModel: AccountViewModel, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modifier) {
+private fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -165,7 +166,8 @@ fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modif
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val percentageSaved = uiState.percentageSaved.coerceIn(0f, 100f)
-        val data = listOf(percentageSaved, 100f - percentageSaved)
+        val data =
+            listOf(percentageSaved, MINOR_TO_MAJOR_UNIT_QUALIFIER.toFloat() - percentageSaved)
         val colors = listOf(Color.Green, Color.Gray)
         var startAngle = 270f
 
@@ -173,7 +175,7 @@ fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modif
             val canvasSize = size.minDimension
 
             data.forEachIndexed { index, value ->
-                val sweepAngle = (value / 100f) * 360f
+                val sweepAngle = (value / MINOR_TO_MAJOR_UNIT_QUALIFIER.toFloat()) * 360f
                 drawArc(
                     color = colors.getOrElse(index) { Color.Gray },
                     startAngle = startAngle,
@@ -194,7 +196,7 @@ fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modif
 }
 
 @Composable
-fun ErrorDialog(viewModel: AccountViewModel, modifier: Modifier = Modifier) {
+private fun ErrorDialog(viewModel: AccountViewModel, modifier: Modifier = Modifier) {
     AlertDialog(
         onDismissRequest = { viewModel.handleEvent(AccountContract.AccountUIEvent.RefreshScreen) },
         properties = DialogProperties(dismissOnClickOutside = false),

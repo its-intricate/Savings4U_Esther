@@ -9,6 +9,7 @@ import com.sb.savings4u.domain.model.Amount
 import com.sb.savings4u.domain.model.SavingsGoal
 import com.sb.savings4u.domain.usecase.GetAccountHolderNameUseCase
 import com.sb.savings4u.domain.usecase.GetRoundUpTotalUseCase
+import com.sb.savings4u.domain.usecase.GetRoundUpTotalUseCase.Companion.MINOR_TO_MAJOR_UNIT_QUALIFIER
 import com.sb.savings4u.domain.usecase.GetSavingsGoalUseCase
 import com.sb.savings4u.domain.usecase.TransferToSavingsGoalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -71,12 +72,13 @@ class AccountViewModel @Inject constructor(
 
     private suspend fun fetchSavingsGoal() {
         val savingsGoal = getSavingsGoalUseCase.execute()
-        val totalSavingsMajorUnits = savingsGoal.totalSaved.minorUnits / 100.0
-        val targetSavingsMajorUnits = savingsGoal.target.minorUnits / 100.0
+        val totalSavingsMajorUnits =
+            savingsGoal.totalSaved.minorUnits / MINOR_TO_MAJOR_UNIT_QUALIFIER
+        val targetSavingsMajorUnits = savingsGoal.target.minorUnits / MINOR_TO_MAJOR_UNIT_QUALIFIER
         _uiState.value = uiState.value.copy(
             totalSaved = formatCurrency(totalSavingsMajorUnits, savingsGoal.totalSaved.currency),
             targetSavings = formatCurrency(targetSavingsMajorUnits, savingsGoal.target.currency),
-            percentageSaved = (totalSavingsMajorUnits / targetSavingsMajorUnits).toFloat() * 100,
+            percentageSaved = (totalSavingsMajorUnits / targetSavingsMajorUnits).toFloat() * MINOR_TO_MAJOR_UNIT_QUALIFIER.toFloat(),
             savingsGoalInfo = savingsGoal
         )
     }

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Savings4U"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".AccountActivity"
             android:exported="true"
             android:theme="@style/Theme.Savings4U">
             <intent-filter>
