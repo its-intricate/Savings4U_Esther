@@ -10,6 +10,8 @@
 - [Running Tests](#running-tests)
   - [Snapshot Tests](#snapshot-tests)
   - [Permissions and SDK Path](#permissions-and-sdk-path)
+- [Additional Notes](#additional-notes)
+
 
 ## About The Project
 
