@@ -1,5 +1,6 @@
 package com.sb.savings4u.data.repository
 
+import android.util.Log
 import com.sb.savings4u.data.api.StarlingBankApiService
 import com.sb.savings4u.domain.model.Account
 import com.sb.savings4u.domain.model.SavingsGoal
@@ -19,6 +20,8 @@ class AccountsRepositoryImpl @Inject constructor(
 
     override suspend fun getAccounts(): Result<List<Account>> = safeApiCall {
         val response = starlingBankApiService.getAccounts("Bearer $accessToken")
+        Log.d("API CALL", response.body().toString())
+
         if (response.isSuccessful) {
             response.body()?.accounts ?: throw IllegalStateException("No accounts found")
         } else {
@@ -28,6 +31,8 @@ class AccountsRepositoryImpl @Inject constructor(
 
     override suspend fun getAccountHolderName(): Result<String> = safeApiCall {
         val response = starlingBankApiService.getAccountHolderName("Bearer $accessToken")
+        Log.d("API CALL", response.body().toString())
+
         if (response.isSuccessful) {
             response.body()?.accountHolderName
                 ?: throw IllegalStateException("Account holder name not found")
@@ -45,6 +50,8 @@ class AccountsRepositoryImpl @Inject constructor(
             val response = starlingBankApiService.getTransactions(
                 "Bearer $accessToken", accountUid, categoryUid, changesSince
             )
+            Log.d("API CALL", response.body().toString())
+
             if (response.isSuccessful) {
                 response.body()?.transactions
                     ?: throw IllegalStateException("No transactions found")
@@ -57,6 +64,8 @@ class AccountsRepositoryImpl @Inject constructor(
     override suspend fun getCurrentSavingsGoal(accountUid: String): Result<List<SavingsGoal>> =
         safeApiCall {
             val response = starlingBankApiService.getSavingsGoals("Bearer $accessToken", accountUid)
+            Log.d("API CALL", response.body().toString())
+
             if (response.isSuccessful) {
                 response.body()?.savingsGoals
                     ?: throw IllegalStateException("No savings goals found")

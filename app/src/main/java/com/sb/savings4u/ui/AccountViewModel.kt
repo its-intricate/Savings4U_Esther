@@ -16,6 +16,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,8 +74,8 @@ class AccountViewModel @Inject constructor(
         val totalSavingsMajorUnits = savingsGoal.totalSaved.minorUnits / 100.0
         val targetSavingsMajorUnits = savingsGoal.target.minorUnits / 100.0
         _uiState.value = uiState.value.copy(
-            totalSaved = "£%.2f".format(totalSavingsMajorUnits),
-            targetSavings = "£%.2f".format(targetSavingsMajorUnits),
+            totalSaved = formatCurrency(totalSavingsMajorUnits, savingsGoal.totalSaved.currency),
+            targetSavings = formatCurrency(targetSavingsMajorUnits, savingsGoal.target.currency),
             percentageSaved = (totalSavingsMajorUnits / targetSavingsMajorUnits).toFloat() * 100,
             savingsGoalInfo = savingsGoal
         )
@@ -80,13 +83,19 @@ class AccountViewModel @Inject constructor(
 
     private suspend fun fetchRoundUpTotal() {
         val roundUpTotal = getRoundUpTotalUseCase.execute()
-        _uiState.value = uiState.value.copy(roundUpTotal = "£%.2f".format(roundUpTotal))
+        _uiState.value = uiState.value.copy(roundUpTotal = formatCurrency(roundUpTotal, "GBP"))
     }
 
     private fun transferRoundUpToSavings() = viewModelScope.launch(exceptionHandler) {
         _uiState.value = uiState.value.copy(isLoading = true)
         transferToSavingsGoalUseCase.execute()
         loadScreen()
+    }
+
+    private fun formatCurrency(amount: Double, currencyCode: String): String {
+        val format = NumberFormat.getCurrencyInstance(Locale.UK)
+        format.currency = Currency.getInstance(currencyCode)
+        return format.format(amount)
     }
 
     companion object {
