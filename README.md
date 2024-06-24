@@ -74,7 +74,7 @@ Ensure you have the necessary permissions for the directories where Paparazzi wi
 ## Additional Notes
 
 Evaluation / Things I would change
-- It is good practice to extract string / colour resources to a res file - this imoroves code readibilty but also reusabilty and maintainabilty.
+- It is good practice to extract string / colour resources to a res file - this improves code readibilty but also reusabilty and maintainabilty.
 - I spent a while trying to understand why my snapshot tests would not work, I think it is something to do with Java versioning or using coroutines but I accept defeat for this submission (but will secretly continue to debug as I am a hopeless problem solver and finding a solution brings me joy) - I still committed the class so you know I tried!
 - There is some light calculation in the ui screen layer for the pie chart, I think this should be extracted out to it's own use case and tested properly, however as it was not a requirement for this submission, I chose to focus my time on the requirements)
 - I was not clear from the instructions whether I should have displayed the transactions but thought about this after submission. If I were to, I would include a button "Show latest transactions" which would show a dialog or bottom sheet with the week's transactions. As it seemed like the round up feature was the main goal of this submission, this is likely an oversight on my part. Apologies :)
