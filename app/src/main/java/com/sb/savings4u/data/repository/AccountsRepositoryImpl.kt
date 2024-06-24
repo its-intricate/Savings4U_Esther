@@ -20,7 +20,7 @@ class AccountsRepositoryImpl @Inject constructor(
 
     override suspend fun getAccounts(): Result<List<Account>> = safeApiCall {
         val response = starlingBankApiService.getAccounts("Bearer $accessToken")
-        Log.d("API CALL", response.body().toString())
+        Log.d("API CALL", (response.body() ?: response.errorBody()).toString())
 
         if (response.isSuccessful) {
             response.body()?.accounts ?: throw IllegalStateException("No accounts found")
@@ -31,7 +31,7 @@ class AccountsRepositoryImpl @Inject constructor(
 
     override suspend fun getAccountHolderName(): Result<String> = safeApiCall {
         val response = starlingBankApiService.getAccountHolderName("Bearer $accessToken")
-        Log.d("API CALL", response.body().toString())
+        Log.d("API CALL", (response.body() ?: response.errorBody()).toString())
 
         if (response.isSuccessful) {
             response.body()?.accountHolderName
@@ -50,7 +50,7 @@ class AccountsRepositoryImpl @Inject constructor(
             val response = starlingBankApiService.getTransactions(
                 "Bearer $accessToken", accountUid, categoryUid, changesSince
             )
-            Log.d("API CALL", response.body().toString())
+            Log.d("API CALL", (response.body() ?: response.errorBody()).toString())
 
             if (response.isSuccessful) {
                 response.body()?.transactions
@@ -64,7 +64,7 @@ class AccountsRepositoryImpl @Inject constructor(
     override suspend fun getCurrentSavingsGoal(accountUid: String): Result<List<SavingsGoal>> =
         safeApiCall {
             val response = starlingBankApiService.getSavingsGoals("Bearer $accessToken", accountUid)
-            Log.d("API CALL", response.body().toString())
+            Log.d("API CALL", (response.body() ?: response.errorBody()).toString())
 
             if (response.isSuccessful) {
                 response.body()?.savingsGoals
@@ -83,6 +83,8 @@ class AccountsRepositoryImpl @Inject constructor(
         val response = starlingBankApiService.transferToSavingsGoal(
             "Bearer $accessToken", accountUid, savingsGoalUid, transferUid, transferRequest
         )
+        Log.d("API CALL", (response.body() ?: response.errorBody()).toString())
+
         if (response.isSuccessful) {
             response.body()?.success ?: throw IllegalStateException("Transfer failed")
         } else {

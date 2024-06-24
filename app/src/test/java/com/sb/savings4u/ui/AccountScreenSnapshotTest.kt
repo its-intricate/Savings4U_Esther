@@ -1,21 +1,26 @@
 package com.sb.savings4u.ui
 
 import androidx.compose.runtime.mutableStateOf
-import app.cash.paparazzi.DeviceConfig
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.paparazzi.Paparazzi
 import com.sb.savings4u.domain.model.Amount
 import com.sb.savings4u.domain.model.SavingsGoal
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class AccountScreenSnapshotTest {
 
     @get:Rule
-    val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_5
-    )
+    val paparazzi = Paparazzi()
+
+    @get:Rule
+    val composeTestRule = createComposeRule()
 
     private val savingsGoal = SavingsGoal(
         savingsGoalUid = "1",
@@ -24,6 +29,11 @@ class AccountScreenSnapshotTest {
         target = Amount("GBP", 20000)
     )
 
+    @Before
+    fun setUp() {
+        // Disable animations
+        composeTestRule.mainClock.autoAdvance = false
+    }
 
     @Test
     fun accountScreenLoadingState() {
@@ -42,6 +52,14 @@ class AccountScreenSnapshotTest {
             )
         }
 
+        composeTestRule.setContent {
+            AccountScreen(viewModel = viewModel)
+        }
+
+        // Advance the clock to ensure all animations are complete
+        composeTestRule.mainClock.advanceTimeBy(10000L) // Adjust time as needed
+
+        // Take a snapshot
         paparazzi.snapshot {
             AccountScreen(viewModel = viewModel)
         }
@@ -64,6 +82,14 @@ class AccountScreenSnapshotTest {
             )
         }
 
+        composeTestRule.setContent {
+            AccountScreen(viewModel = viewModel)
+        }
+
+        // Advance the clock to ensure all animations are complete
+        composeTestRule.mainClock.advanceTimeBy(10000L) // Adjust time as needed
+
+        // Take a snapshot
         paparazzi.snapshot {
             AccountScreen(viewModel = viewModel)
         }
@@ -86,6 +112,14 @@ class AccountScreenSnapshotTest {
             )
         }
 
+        composeTestRule.setContent {
+            AccountScreen(viewModel = viewModel)
+        }
+
+        // Advance the clock to ensure all animations are complete
+        composeTestRule.mainClock.advanceTimeBy(10000L) // Adjust time as needed
+
+        // Take a snapshot
         paparazzi.snapshot {
             AccountScreen(viewModel = viewModel)
         }

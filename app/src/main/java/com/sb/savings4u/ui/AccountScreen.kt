@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,7 +56,7 @@ fun Content(uiState: AccountContract.AccountUIState, viewModel: AccountViewModel
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 100.dp)
@@ -75,7 +77,7 @@ fun Content(uiState: AccountContract.AccountUIState, viewModel: AccountViewModel
 @Composable
 fun AccountInformation(uiState: AccountContract.AccountUIState) {
     Column(
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
@@ -100,26 +102,32 @@ fun AccountInformation(uiState: AccountContract.AccountUIState) {
 
 @Composable
 fun SavingsSection(uiState: AccountContract.AccountUIState) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    ) {
-        Text(
-            text = "Total Savings: ${uiState.totalSaved}",
-            color = Color(0xFF262637),
-            fontSize = 14.sp
-        )
+    Card(modifier = Modifier.padding(16.dp)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp)
+        ) {
+            Text(
+                text = "Total Savings: ${uiState.totalSaved}",
+                color = Color(0xFF262637),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
 
-        Text(
-            text = "Target Savings: ${uiState.targetSavings}",
-            color = Color(0xFF262637),
-            fontSize = 14.sp
-        )
+            Text(
+                text = "Target Savings: ${uiState.targetSavings}",
+                color = Color(0xFF262637),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-        PieChart(uiState = uiState)
+            PieChart(uiState = uiState)
+        }
     }
 }
 
@@ -179,7 +187,8 @@ fun PieChart(uiState: AccountContract.AccountUIState, modifier: Modifier = Modif
 
         Text(
             text = "${"%.2f".format(uiState.percentageSaved)}%",
-            modifier = Modifier.padding(vertical = 16.dp)
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 24.dp)
         )
     }
 }
