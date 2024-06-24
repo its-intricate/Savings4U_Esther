@@ -6,8 +6,8 @@ plugins {
 }
 
 kapt {
-    correctErrorTypes = true  // Help with unclear kapt errors
-    useBuildCache = true      // Improve build performance using Gradle's build cache
+    correctErrorTypes = true
+    useBuildCache = true
 }
 
 android {
