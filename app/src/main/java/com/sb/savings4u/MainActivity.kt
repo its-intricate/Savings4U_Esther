@@ -20,5 +20,7 @@ class MainActivity : ComponentActivity() {
                 AccountScreen(viewModel)
             }
         }
+
+        viewModel.initialize()
     }
 }

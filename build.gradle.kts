@@ -12,5 +12,6 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:8.0.0")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.51.1")
+        classpath("app.cash.paparazzi:paparazzi-gradle-plugin:1.3.2")
     }
 }
