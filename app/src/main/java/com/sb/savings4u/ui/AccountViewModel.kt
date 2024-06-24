@@ -38,7 +38,7 @@ class AccountViewModel @Inject constructor(
         _uiState.value = uiState.value.copy(isLoading = false, isError = true)
     }
 
-    fun initialize() {
+    init {
         loadScreen()
     }
 

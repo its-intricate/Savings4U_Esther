@@ -20,7 +20,5 @@ class AccountActivity : ComponentActivity() {
                 AccountScreen(viewModel)
             }
         }
-
-        viewModel.initialize()
     }
 }
