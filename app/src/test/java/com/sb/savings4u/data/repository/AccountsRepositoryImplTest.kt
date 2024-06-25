@@ -19,9 +19,12 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrofit2.Response
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @ExperimentalCoroutinesApi
 class AccountsRepositoryImplTest {
@@ -234,4 +237,17 @@ class AccountsRepositoryImplTest {
             // Then
             assert(result.isFailure)
         }
+
+    @Test
+    fun `GIVEN current date WHEN getOneWeekPriorIsoDateTime is called THEN returns correct format`() {
+        // Given
+        val expectedFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val expectedDate = ZonedDateTime.now().minusWeeks(1).format(expectedFormat)
+
+        // When
+        val result = repository.getOneWeekPriorIsoDateTime()
+
+        // Then
+        assertEquals(expectedDate, result)
+    }
 }

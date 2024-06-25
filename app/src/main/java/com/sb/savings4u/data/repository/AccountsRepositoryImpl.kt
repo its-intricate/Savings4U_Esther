@@ -1,5 +1,6 @@
 package com.sb.savings4u.data.repository
 
+import androidx.annotation.VisibleForTesting
 import com.sb.savings4u.data.api.StarlingBankApiService
 import com.sb.savings4u.domain.model.Account
 import com.sb.savings4u.domain.model.SavingsGoal
@@ -85,7 +86,8 @@ class AccountsRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun getOneWeekPriorIsoDateTime(): String {
+    @VisibleForTesting
+    fun getOneWeekPriorIsoDateTime(): String {
         val oneWeekPriorDateTime = ZonedDateTime.now().minusWeeks(1)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         return oneWeekPriorDateTime.format(formatter)
